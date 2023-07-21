@@ -1,6 +1,8 @@
 package com.jwc;
 
+import com.jwc.compute.ProcessInput;
 import com.jwc.model.WordCountInput;
+import com.jwc.model.WordCountOutput;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -29,7 +31,40 @@ public class WordCount implements Callable<Integer> {
     private boolean characterEnabled;
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
+        WordCountInput wordCountInput = buildWordCountInput();
+        WordCountOutput wordCountOutput = new ProcessInput().processFile(file, wordCountInput);
+        System.out.println(formatOutput(wordCountOutput, wordCountInput));
+        return 0;
+    }
+
+    private String formatOutput(WordCountOutput wordCountOutput, WordCountInput wordCountInput) {
+        StringBuilder sb = new StringBuilder();
+        if (wordCountInput.words()) {
+            sb.append(" words: ").append(wordCountOutput.words());
+        }
+        if (wordCountInput.characters()) {
+            sb.append(" characters: ").append(wordCountOutput.characters());
+        }
+        if (wordCountInput.lines()) {
+            sb.append(" lines: ").append(wordCountOutput.lines());
+        }
+        if (wordCountInput.bytes()) {
+            sb.append(" bytes: ").append(wordCountOutput.bytes());
+        }
+        sb.append(" ").append(file.getPath());
+        return sb.toString();
+    }
+
+    private WordCountInput buildWordCountInput() {
+        if (!wordEnabled && !lineEnabled && !byteEnabled && !characterEnabled) {
+            return WordCountInput.builder()
+                    .characters(true)
+                    .words(true)
+                    .bytes(true)
+                    .lines(true)
+                    .build();
+        }
         WordCountInput.WordCountInputBuilder builder = WordCountInput.builder();
         if (wordEnabled) {
             builder.words(true);
@@ -43,9 +78,7 @@ public class WordCount implements Callable<Integer> {
         if (characterEnabled) {
             builder.characters(true);
         }
-        WordCountInput wordCountInput = builder.build();
-        System.out.println(wordCountInput);
-        return 0;
+        return builder.build();
     }
 
     public static void main(String[] args) {
