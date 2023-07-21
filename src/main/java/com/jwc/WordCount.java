@@ -18,16 +18,16 @@ public class WordCount implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "file whose word count needs to be calculated")
     private File file;
 
-    @CommandLine.Option(names = {"-w"}, description = "word count")
+    @CommandLine.Option(names = {"-w", "--words"}, description = "word count")
     private boolean wordEnabled;
 
-    @CommandLine.Option(names = {"-l"}, description = "line count")
+    @CommandLine.Option(names = {"-l", "--lines"}, description = "line count")
     private boolean lineEnabled;
 
-    @CommandLine.Option(names = {"-b"}, description = "byte count")
+    @CommandLine.Option(names = {"-b", "--bytes"}, description = "byte count")
     private boolean byteEnabled;
 
-    @CommandLine.Option(names = {"-c"}, description = "character count")
+    @CommandLine.Option(names = {"-c", "--characters"}, description = "character count")
     private boolean characterEnabled;
 
     @Override
