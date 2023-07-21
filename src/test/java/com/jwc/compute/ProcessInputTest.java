@@ -1,16 +1,20 @@
 package com.jwc.compute;
 
+import com.jwc.exception.WordCountException;
 import com.jwc.model.WordCountInput;
 import com.jwc.model.WordCountOutput;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProcessInputTest {
 
@@ -27,6 +31,16 @@ public class ProcessInputTest {
     @BeforeEach
     void setUp() {
         processInput = new ProcessInput();
+    }
+
+    @Test
+    public void ioExceptionForNonExistentFileSuccess() throws IOException {
+        // Arrange
+        File nonExistentFile = new File("non_existent_file.txt");
+
+        // Act & assert
+        assertThrows(WordCountException.class,
+                () -> processInput.processFile(nonExistentFile, WordCountInput.builder().build()));
     }
 
     @ParameterizedTest

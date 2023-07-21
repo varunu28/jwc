@@ -1,5 +1,6 @@
 package com.jwc.compute;
 
+import com.jwc.exception.WordCountException;
 import com.jwc.model.WordCountInput;
 import com.jwc.model.WordCountOutput;
 
@@ -20,7 +21,7 @@ public class ProcessInput {
                     .characters(wordCountInput.characters() ? content.length() : 0)
                     .build();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new WordCountException("error while processing the file: " + e);
         }
     }
 }
