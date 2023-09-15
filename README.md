@@ -12,6 +12,6 @@ jwc -wc --lines file.txt
 
 ## How to build the project
 ```agsl
-./gradlew shadowJarc
+./gradlew shadowJar
 alias jwc='java -jar build/libs/jwc-shadow.jar'
 ```
